@@ -14,10 +14,8 @@ var api = express.Router();
 api.post('/personas', personaController.guardar);
 api.get('/personas', personaController.todos);
 api.get('/personabyID/:id', personaController.buscarPorID);
-api.put('/personabyID/:id', personaController.actualizar);
-api.delete('/personabyID/:id', personaController.eliminarPorID);
-
-
+api.delete('/personasbyID', personaController.eliminarPersona);
+api.put('/personas', personaController.actualizar);
 // api.post('/autoguardar',autoController.guardar);
 
 // Exportamos la confi,guración

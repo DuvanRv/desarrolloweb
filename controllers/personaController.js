@@ -52,7 +52,7 @@ function buscarPorID(req, res) {
      })
 }
 
-function todos(req, res) {
+function todos(res) {
 
     Persona.find({},(err,persona)=>{
         if(err) return res.status(500).send({message:'error al realizar la peticion'})
@@ -62,39 +62,30 @@ function todos(req, res) {
      })
 }
 
-function actualizar(req, res){
+function eliminarPersona(req, res){
+    Persona.findById(req.params.id, function(err, persona){
+        Persona.remove(function(err){
+            if(err) return res.status(500).send(err.message);
+            res.status(200).send();
+        });
+    });
+}
 
-    let idpersona = req.params.id
-    var data = {
-        nombre: req.body.nombre,
-        apellido: req.body.apellido,
-        edad: req.body.edad, 
-        rut: req.body.rut,
-        phone: req.body.phone,
-        sexo: req.body.sexo
-    }
-    Persona.update({"_id":  idpersona}, data, function(){
-        res.send(data);
+function actualizar(){
+    const idpersona = req.params.id
+    const body = req.body
+    console.log(body)
+    Persona.findByIdAndUpdate(idpersona, body, function(err){
+        if (err) res.status(500).send({message: 'error al actualizar datos'})
+        res.status(200).send();
     })
 }
-
-function eliminarPorID(req, res){
-
-    let idpersona = req.params.id
-    Persona.remove(idpersona,(err,persona)=>{
-        if(err) return res.status(500).send({message:'error al realizar la peticion'})
-        if(!persona) return res.status(404).send({message:'Error la persona no existe'})
-     })
-}
-
-
-
 // Exportamos las funciones en un objeto json para poder usarlas en otros fuera de este fichero
 module.exports = {
     guardar,
     buscar,
     buscarPorID,
-    todos, 
-    actualizar, 
-    eliminarPorID
+    todos,
+    actualizar,
+    eliminarPersona
 };
